@@ -1,4 +1,3 @@
 stack-name: Image-Detector
 env-name: development
 aws-profile: test
-function-id: ImageProcessor
