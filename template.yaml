@@ -17,8 +17,6 @@ Resources:
       Policies:
         - AWSXrayWriteOnlyAccess
         - AmazonRekognitionFullAccess
-        - S3CrudPolicy:
-            BucketName: !Ref Images
       Events:
         Images:
           Type: S3
@@ -27,10 +25,6 @@ Resources:
             Events:
               - s3:ObjectCreated:*
               - s3:ObjectRemoved:*
-      Environment:
-        Variables:
-          BUCKET_NAME: !Ref Images
-          BUCKET_ARN: !GetAtt Images.Arn
   Images:
     Type: AWS::S3::Bucket
     Properties:
