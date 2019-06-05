@@ -14,7 +14,6 @@ Resources:
       MemorySize: 3008
       Timeout: 30
       Tracing: Active
-      # TODO restrict permissions later
       Policies:
         - AWSXrayWriteOnlyAccess
         - AmazonRekognitionFullAccess
