@@ -62,7 +62,7 @@ exports.handler = async (event, context) => {
   let statusCode;
 
   try {
-    response = await rekognition.detectLabels(params);
+    response = await rekognition.detectLabels(params).promise();
     statusCode = 200;
     console.log('Successfully analyzed photo ', response);
   } catch (err) {
