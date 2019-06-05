@@ -1,2 +1,4 @@
 function-id: ImageProcessor
 template-path: ../../template.yaml
+aws-profile: test
+env-name: development
