@@ -58,7 +58,7 @@ exports.handler = async (event, context) => {
     MinConfidence: 80
   };
 
-  console.log('PARAMS ', params);
+  console.log('PARAMS ', JSON.stringify(params, undefined, 2));
 
   let response;
   let statusCode;
@@ -70,7 +70,7 @@ exports.handler = async (event, context) => {
   } catch (err) {
     response = err.message;
     statusCode = err.statusCode || 500;
-    console.log('An error occured ', JSON.stringify(err), undefined, 2);
+    console.log('An error occured ', JSON.stringify(err, undefined, 2));
   }
 
   return {
