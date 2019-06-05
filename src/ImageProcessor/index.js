@@ -58,7 +58,7 @@ exports.handler = async (event, context) => {
     MinConfidence: 80
   };
 
-  console.log('PARAMS ', JSON.parse(params, undefined, 2));
+  console.log('PARAMS ', params);
 
   let response;
   let statusCode;
