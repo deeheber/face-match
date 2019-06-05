@@ -66,11 +66,11 @@ exports.handler = async (event, context) => {
   try {
     response = await rekognition.detectLabels(params).promise();
     statusCode = 200;
-    console.log('Successfully analyzed photo ', response);
+    console.log('Successfully analyzed photo ', JSON.stringify(response, undefined, 2));
   } catch (err) {
     response = err.message;
     statusCode = err.statusCode || 500;
-    console.log('An error occured ', err);
+    console.log('An error occured ', JSON.stringify(err), undefined, 2);
   }
 
   return {
