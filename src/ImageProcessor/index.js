@@ -1,3 +1,6 @@
+const AWS = require('aws-sdk');
+const rekognition = new AWS.rekognition();
+
 exports.handler = async (event, context) => {
   // Log the event argument for debugging and for use in local development.
   console.log(JSON.stringify(event, undefined, 2));
@@ -42,5 +45,35 @@ exports.handler = async (event, context) => {
   //   ]
   // }
 
-  return { it: 'works' };
+  const Bucket = event.Records[0].s3.bucket.name;
+  const Name = event.Records[0].s3.object.key;
+  const params = {
+    Image: {
+      S3Object: {
+        Bucket,
+        Name
+      }
+    },
+    MaxLabels: 10,
+    MinConfidence: 80
+  };
+
+  let response;
+  let statusCode;
+
+  try {
+    response = await rekognition.detectLabels(params);
+    statusCode = 200;
+    console.log('Successfully analyzed photo ', response);
+  } catch (err) {
+    response = err.message;
+    statusCode = err.statusCode || 500;
+    console.log('An error occured ', err);
+  }
+
+  return {
+    statusCode,
+    headers: {},
+    response
+  }
 };
