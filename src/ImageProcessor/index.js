@@ -1,5 +1,5 @@
 const AWS = require('aws-sdk');
-const rekognition = new AWS.rekognition();
+const rekognition = new AWS.Rekognition();
 
 exports.handler = async (event, context) => {
   // Log the event argument for debugging and for use in local development.
