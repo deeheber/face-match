@@ -35,6 +35,40 @@ Resources:
     Type: AWS::S3::Bucket
     Properties:
       BucketName: !Sub ${AWS::StackName}-images-${AWS::AccountId}
+  CollectionImages:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub ${AWS::StackName}-collectio-${AWS::AccountId}
+  AddToCollection:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub ${AWS::StackName}-AddToCollection
+      Description: !Sub
+        - Stack ${StackTagName} Environment ${EnvironmentTagName} Function ${ResourceName}
+        - ResourceName: AddToCollection
+      CodeUri: src/AddToCollection
+      Handler: index.handler
+      Runtime: nodejs10.x
+      MemorySize: 3008
+      Timeout: 30
+      Tracing: Active
+      Policies:
+        - AWSXrayWriteOnlyAccess
+        - AmazonRekognitionFullAccess
+        - Version: 2012-10-17
+          Statement:
+            - Effect: Allow
+              Resource: arn:aws:s3:::*
+              Action:
+                - s3:GetObject
+      Events:
+        CollectionImages:
+          Type: S3
+          Properties:
+            Bucket: !Ref CollectionImages
+            Events:
+              - s3:ObjectCreated:*
+              - s3:ObjectRemoved:*
 Parameters:
   StackTagName:
     Type: String
