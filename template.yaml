@@ -30,7 +30,6 @@ Resources:
             Bucket: !Ref Images
             Events:
               - s3:ObjectCreated:*
-              - s3:ObjectRemoved:*
   Images:
     Type: AWS::S3::Bucket
     Properties:
