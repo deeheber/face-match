@@ -1,3 +1,20 @@
+// TODO:
+// Grab the put s3 object bucket and name (done possibly???)
+// Compose request params something like ---
+//   const params = {
+//     CollectionId: 'Danielle',
+//     FaceMatchThreshold: 95,
+//     Image: {
+//     S3Object: {
+//       Bucket,
+//       Name
+//     }
+//     },
+//     MaxFaces: 5
+//   };
+//   await rekognition.searchFacesByImage(params).promise()
+// Determine if there are matches > return/console.log the results
+
 const AWS = require('aws-sdk');
 const rekognition = new AWS.Rekognition();
 
