@@ -1,0 +1,6 @@
+# files generated when building/deploying locally
+.aws-sam/
+.stackery/
+.vscode/
+
+node_modules
