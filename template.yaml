@@ -74,6 +74,7 @@ Resources:
         Variables:
           TABLE_NAME: !Ref CollectionTable
           TABLE_ARN: !GetAtt CollectionTable.Arn
+          COLLECTION_NAME: Danielle
   CollectionTable:
     Type: AWS::DynamoDB::Table
     Properties:
