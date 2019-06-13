@@ -1,15 +1,3 @@
-// TODO:
-// If adding an image to the bucket (ObjectCreated:Put)
-//   Grab the bucket name and object key
-//   Call indexFaces
-//   Get the FaceId from the Response
-//   Put the bucket name, object key, and FaceId in a dynamoDB table
-
-// If deleting image from bucket (ObjectRemoved:Delete)
-//   Query the table for the bucket name / object key to get the FaceId
-//   Call deleteFaces
-//   Delete the row in dynamoDB
-
 const AWS = require('aws-sdk');
 const dynamodb = new AWS.DynamoDB.DocumentClient();
 
@@ -20,6 +8,7 @@ exports.handler = async (event, context) => {
   const BucketName = event.Records[0].s3.bucket.name;
   const ObjectKey = event.Records[0].s3.object.key;
   const TableName = process.env.TABLE_NAME;
+  const CollectionName = process.env.COLLECTION_NAME;
 
   let response;
   let statusCode;
@@ -27,10 +16,10 @@ exports.handler = async (event, context) => {
   try {
     // Adding an image to the collection
     if (event.Records[0].eventName === 'ObjectCreated:Put') {
-      console.log(`Adding image to Danielle collection`);
+      console.log(`Adding image to ${CollectionName} collection`);
       // TODO add call to rekognition indexFaces here and grab FaceId from reply
       const FaceId = '8675309';
-      console.log(`Face successfully added to Danielle collection`);
+      console.log(`Face successfully added to ${CollectionName} collection`);
 
       console.log(`Adding metadata to ${TableName}`);
       await dynamodb.put({
@@ -43,7 +32,7 @@ exports.handler = async (event, context) => {
       }).promise();
       console.log(`Image metadata successfully written to dynamoDB`);
 
-      response = 'Image successfully added to collection';
+      response = `Image successfully added to the ${CollectionName} collection`;
     }
 
     // Removing an image from the collection
@@ -55,10 +44,10 @@ exports.handler = async (event, context) => {
       }).promise();
       console.log('FaceId successfully obtained from dynamoDB');
 
-      console.log('Deteting face from the Danielle collection');
+      console.log(`Deteting face from the ${CollectionName} collection`);
       // TODO add deleteFaces call to rekognition here
       console.log(`FacedId is ${Item.FaceId}`);
-      console.log('Face successfully deleted from the Danielle collection');
+      console.log(`Face successfully deleted from the ${CollectionName} collection`);
 
       console.log('Removing image metadata from dynamoDB');
       await dynamodb.delete({
@@ -67,7 +56,7 @@ exports.handler = async (event, context) => {
       }).promise();
       console.log('Image metadata successfully removed from dynamoDB');
 
-      response = 'Image successfully removed from collection';
+      response = `Image successfully removed from the ${CollectionName} collection`;
     }
 
     statusCode = 200;
