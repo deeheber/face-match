@@ -1,4 +1,4 @@
-function-id: AddToCollection
+function-id: ManageCollection
 template-path: ../../template.yaml
 aws-profile: test
 env-name: development

@@ -1,4 +1,4 @@
-function-id: ImageProcessor
+function-id: CompareFaces
 template-path: ../../template.yaml
 aws-profile: test
 env-name: development
