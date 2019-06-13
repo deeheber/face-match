@@ -1,6 +1,9 @@
 # face-match
 
-### Command line setup
+## Description
+This stack allows you to upload and delete images from a collection. You can then upload other images (outside of the collection) and the program searches the images in the collection for a face match with the other images that were uploaded. Could be used for facial recognition to unlock something like a diary or a door.
+
+## Command line setup
 - Install and configure the [AWS CLI](https://aws.amazon.com/cli/) if you haven't yet
 - Run `aws rekognition create-collection --collection-id [collection name here]` using the AWS CLI on the command line to create a new rekognition collection [docs](https://docs.aws.amazon.com/rekognition/latest/dg/API_CreateCollection.html)
 - You will need the value of what you named your collection in step 6 below
