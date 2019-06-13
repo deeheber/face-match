@@ -8,7 +8,7 @@
 ## Directions to run/deploy
 1. Clone or fork this repo
 2. Signup and/or login to [Stackery](https://www.stackery.io/) (there's a free developer tier)
-3. Create a new stack
+3. Link git and create a new stack
 4. In the create stack form in the `Stack Blueprint` section (at the bottom will need to make selections to get it to show) select `specify remote source` and paste in the URL to your cloned or forked repo
 5. The stack will load in visual mode
 6. Update the `COLLECTION_NAME` variable in template mode to match what you named the collection (should be in two places)
