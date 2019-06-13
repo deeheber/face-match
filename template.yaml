@@ -51,6 +51,9 @@ Resources:
             Bucket: !Ref Images
             Events:
               - s3:ObjectCreated:*
+      Environment:
+        Variables:
+          COLLECTION_NAME: Danielle
   ManageCollection:
     Type: AWS::Serverless::Function
     Properties:
