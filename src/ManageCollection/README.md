@@ -1,8 +1,4 @@
-# AddToCollection Function
-
-### Setup Before Using
-- Run `aws rekognition create-collection --collection-id [collection name here]` using the AWS CLI to create the collection [docs](https://docs.aws.amazon.com/rekognition/latest/dg/API_CreateCollection.html)
-- Update the `COLLECTION_NAME` variable in the `template.yaml` to match what you named the collection
+# ManageCollection Function
 
 ### Description
 - When an image is added to the `CollectionImages` bucket, it uploads the image to the collection [docs](https://docs.aws.amazon.com/rekognition/latest/dg/API_IndexFaces.html)
