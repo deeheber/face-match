@@ -1,14 +1,35 @@
 AWSTemplateFormatVersion: 2010-09-09
 Transform: AWS::Serverless-2016-10-31
 Resources:
-  ImageProcessor:
+  Images:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub ${AWS::StackName}-images-${AWS::AccountId}
+  CollectionImages:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub ${AWS::StackName}-collectio-${AWS::AccountId}
+  CollectionTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      AttributeDefinitions:
+        - AttributeName: ObjectKey
+          AttributeType: S
+      BillingMode: PAY_PER_REQUEST
+      KeySchema:
+        - AttributeName: ObjectKey
+          KeyType: HASH
+      StreamSpecification:
+        StreamViewType: NEW_AND_OLD_IMAGES
+      TableName: !Sub ${AWS::StackName}-CollectionTable
+  CompareFaces:
     Type: AWS::Serverless::Function
     Properties:
-      FunctionName: !Sub ${AWS::StackName}-ImageProcessor
+      FunctionName: !Sub ${AWS::StackName}-CompareFaces
       Description: !Sub
         - Stack ${StackTagName} Environment ${EnvironmentTagName} Function ${ResourceName}
-        - ResourceName: ImageProcessor
-      CodeUri: src/ImageProcessor
+        - ResourceName: CompareFaces
+      CodeUri: src/CompareFaces
       Handler: index.handler
       Runtime: nodejs10.x
       MemorySize: 3008
@@ -30,22 +51,14 @@ Resources:
             Bucket: !Ref Images
             Events:
               - s3:ObjectCreated:*
-  Images:
-    Type: AWS::S3::Bucket
-    Properties:
-      BucketName: !Sub ${AWS::StackName}-images-${AWS::AccountId}
-  CollectionImages:
-    Type: AWS::S3::Bucket
-    Properties:
-      BucketName: !Sub ${AWS::StackName}-collectio-${AWS::AccountId}
-  AddToCollection:
+  ManageCollection:
     Type: AWS::Serverless::Function
     Properties:
-      FunctionName: !Sub ${AWS::StackName}-AddToCollection
+      FunctionName: !Sub ${AWS::StackName}-ManageCollection
       Description: !Sub
         - Stack ${StackTagName} Environment ${EnvironmentTagName} Function ${ResourceName}
-        - ResourceName: AddToCollection
-      CodeUri: src/AddToCollection
+        - ResourceName: ManageCollection
+      CodeUri: src/ManageCollection
       Handler: index.handler
       Runtime: nodejs10.x
       MemorySize: 3008
@@ -75,19 +88,6 @@ Resources:
           TABLE_NAME: !Ref CollectionTable
           TABLE_ARN: !GetAtt CollectionTable.Arn
           COLLECTION_NAME: Danielle
-  CollectionTable:
-    Type: AWS::DynamoDB::Table
-    Properties:
-      AttributeDefinitions:
-        - AttributeName: ObjectKey
-          AttributeType: S
-      BillingMode: PAY_PER_REQUEST
-      KeySchema:
-        - AttributeName: ObjectKey
-          KeyType: HASH
-      StreamSpecification:
-        StreamViewType: NEW_AND_OLD_IMAGES
-      TableName: !Sub ${AWS::StackName}-CollectionTable
 Parameters:
   StackTagName:
     Type: String
