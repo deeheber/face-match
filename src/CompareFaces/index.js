@@ -1,20 +1,3 @@
-// TODO:
-// Grab the put s3 object bucket and name (done possibly???)
-// Compose request params something like ---
-//   const params = {
-//     CollectionId: 'Danielle',
-//     FaceMatchThreshold: 95,
-//     Image: {
-//     S3Object: {
-//       Bucket,
-//       Name
-//     }
-//     },
-//     MaxFaces: 5
-//   };
-//   await rekognition.searchFacesByImage(params).promise()
-// Determine if there are matches > return/console.log the results
-
 const AWS = require('aws-sdk');
 const rekognition = new AWS.Rekognition();
 
@@ -25,25 +8,25 @@ exports.handler = async (event, context) => {
   const Bucket = event.Records[0].s3.bucket.name;
   const Name = event.Records[0].s3.object.key;
   const params = {
+    CollectionId: process.env.COLLECTION_NAME,
+    FaceMatchThreshold: 90,
     Image: {
       S3Object: {
         Bucket,
         Name
       }
-    },
-    MaxLabels: 10,
-    MinConfidence: 80
+    }
   };
-
   console.log('PARAMS ', JSON.stringify(params, undefined, 2));
 
   let response;
   let statusCode;
 
   try {
-    response = await rekognition.detectLabels(params).promise();
+    response = await rekognition.searchFacesByImage(params).promise();
     statusCode = 200;
-    console.log('Successfully analyzed photo ', JSON.stringify(response, undefined, 2));
+    console.log('Face comparison results ');
+    console.log(JSON.stringify(response, undefined, 2));
   } catch (err) {
     response = err.message;
     statusCode = err.statusCode || 500;
@@ -54,5 +37,5 @@ exports.handler = async (event, context) => {
     statusCode,
     headers: {},
     response
-  }
+  };
 };
