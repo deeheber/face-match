@@ -37,7 +37,13 @@ Resources:
       Tracing: Active
       Policies:
         - AWSXrayWriteOnlyAccess
-        - AmazonRekognitionFullAccess
+        - Version: 2012-10-17
+          Statement:
+            - Effect: Allow
+              Resource: '*'
+              Action:
+                - rekognition:SearchFacesByImage
+        # Fix this later
         - Version: 2012-10-17
           Statement:
             - Effect: Allow
@@ -69,15 +75,28 @@ Resources:
       Tracing: Active
       Policies:
         - AWSXrayWriteOnlyAccess
-        - AmazonRekognitionFullAccess
+        - Version: 2012-10-17
+          Statement:
+            - Effect: Allow
+              Resource: '*'
+              Action:
+                - rekognition:IndexFaces
+                - rekognition:DeleteFaces
+        # Fix this later
         - Version: 2012-10-17
           Statement:
             - Effect: Allow
               Resource: arn:aws:s3:::*
               Action:
                 - s3:GetObject
-        - DynamoDBCrudPolicy:
-            TableName: !Ref CollectionTable
+        - Version: 2012-10-17
+          Statement:
+            - Effect: Allow
+              Resource: !GetAtt CollectionTable.Arn
+              Action:
+                - dynamodb:GetItem
+                - dynamodb:PutItem
+                - dynamodb:DeleteItem
       Events:
         CollectionImages:
           Type: S3
