@@ -53,7 +53,7 @@ Resources:
               - s3:ObjectCreated:*
       Environment:
         Variables:
-          COLLECTION_NAME: Danielle
+          COLLECTION_NAME: !Ref EnvConfigcollectionIdAsString
   ManageCollection:
     Type: AWS::Serverless::Function
     Properties:
@@ -90,7 +90,7 @@ Resources:
         Variables:
           TABLE_NAME: !Ref CollectionTable
           TABLE_ARN: !GetAtt CollectionTable.Arn
-          COLLECTION_NAME: Danielle
+          COLLECTION_NAME: !Ref EnvConfigcollectionIdAsString
 Parameters:
   StackTagName:
     Type: String
@@ -98,3 +98,9 @@ Parameters:
   EnvironmentTagName:
     Type: String
     Description: Environment Name (injected by Stackery at deployment time)
+  EnvConfigcollectionIdAsString:
+    Type: AWS::SSM::Parameter::Value<String>
+    Default: /<EnvironmentName>/collectionId
+Metadata:
+  EnvConfigParameters:
+    EnvConfigcollectionIdAsString: collectionId
