@@ -29,7 +29,7 @@
 3. Link git and add a new stack
 4. In the create stack form select your git provider and `use existing repo` > type in the URL for your repo
 5. The stack will load in visual mode
-6. Update the `COLLECTION_NAME` variable in template mode to match what you named the collection (should be in two places)
+6. [Add an environment variable](https://docs.stackery.io/docs/using-stackery/environments/#setting-configuration-store-values) of `"collectionId": "[collection name here]"`
 7. Connect your AWS account to Stackery if you haven't yet and then [deploy your stack](https://docs.stackery.io/docs/workflow/deploying-serverless-stacks/)
 8. More details on what each function does can be found in the various `README.md` files in this repo
 
