@@ -43,11 +43,10 @@ Resources:
               Resource: '*'
               Action:
                 - rekognition:SearchFacesByImage
-        # Fix this later
         - Version: 2012-10-17
           Statement:
             - Effect: Allow
-              Resource: arn:aws:s3:::*
+              Resource: !Sub arn:aws:s3:::${AWS::StackName}-images-${AWS::AccountId}/*
               Action:
                 - s3:GetObject
       Events:
