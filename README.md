@@ -18,11 +18,6 @@
 
 ![Setup](https://user-images.githubusercontent.com/12616554/59531815-d409d500-8e9b-11e9-9852-ec5c5e70d8cc.png)
 
-### Command line setup
-- Install and configure the [AWS CLI](https://aws.amazon.com/cli/) if you haven't yet
-- Run `aws rekognition create-collection --collection-id [collection name here]` using the AWS CLI on the command line to create a new rekognition collection [docs](https://docs.aws.amazon.com/rekognition/latest/dg/API_CreateCollection.html)
-- You will need the value of what you named your collection in step 6 below
-
 ### Directions to run/deploy
 1. Sign up for [Stackery](https://www.stackery.io/) (there's a free developer tier)
 2. [Create an environment](https://docs.stackery.io/docs/using-stackery/environments/)
