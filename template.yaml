@@ -123,6 +123,13 @@ Resources:
       Tracing: Active
       Policies:
         - AWSXrayWriteOnlyAccess
+        - Version: 2012-10-17
+          Statement:
+            - Effect: Allow
+              Resource: '*'
+              Action:
+                - rekognition:ListCollections
+                - rekognition:CreateCollection
       Environment:
         Variables:
           COLLECTION_NAME: !Ref EnvConfigcollectionIdAsString
