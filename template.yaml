@@ -108,6 +108,36 @@ Resources:
           TABLE_NAME: !Ref CollectionTable
           TABLE_ARN: !GetAtt CollectionTable.Arn
           COLLECTION_NAME: !Ref EnvConfigcollectionIdAsString
+  CreateCollection:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub ${AWS::StackName}-CreateCollection
+      Description: !Sub
+        - Stack ${StackTagName} Environment ${EnvironmentTagName} Function ${ResourceName}
+        - ResourceName: CreateCollection
+      CodeUri: src/CreateCollection
+      Handler: index.handler
+      Runtime: nodejs10.x
+      MemorySize: 3008
+      Timeout: 30
+      Tracing: Active
+      Policies:
+        - AWSXrayWriteOnlyAccess
+        - Version: 2012-10-17
+          Statement:
+            - Effect: Allow
+              Resource: '*'
+              Action:
+                - rekognition:ListCollections
+                - rekognition:CreateCollection
+      Environment:
+        Variables:
+          COLLECTION_NAME: !Ref EnvConfigcollectionIdAsString
+  CreateCollectionDeployTrigger:
+    Type: Custom::FunctionDeployTrigger
+    Properties:
+      ServiceToken: !GetAtt CreateCollection.Arn
+      DeploymentTimestamp: !Ref DeploymentTimestamp
 Parameters:
   StackTagName:
     Type: String
@@ -118,6 +148,9 @@ Parameters:
   EnvConfigcollectionIdAsString:
     Type: AWS::SSM::Parameter::Value<String>
     Default: /<EnvironmentName>/collectionId
+  DeploymentTimestamp:
+    Type: Number
+    Description: Deployment preparation timestamp in milliseconds Since Epoch (injected by Stackery at deployment time)
 Metadata:
   EnvConfigParameters:
     EnvConfigcollectionIdAsString: collectionId
