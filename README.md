@@ -16,7 +16,7 @@
   - Rekognition
 - [Node](https://nodejs.org/en/)
 
-![Setup](https://user-images.githubusercontent.com/12616554/59531815-d409d500-8e9b-11e9-9852-ec5c5e70d8cc.png)
+![Setup](https://user-images.githubusercontent.com/12616554/63046958-42611880-be88-11e9-97ac-cc34a1d5de52.png)
 
 ### Directions to run/deploy
 1. Sign up for [Stackery](https://www.stackery.io/) (there's a free developer tier)
