@@ -24,14 +24,12 @@
 - You will need the value of what you named your collection in step 6 below
 
 ### Directions to run/deploy
-1. Clone or fork this repo
-2. Signup and/or login to [Stackery](https://www.stackery.io/) (there's a free developer tier)
-3. Link git and add a new stack
-4. In the create stack form select your git provider and `use existing repo` > type in the URL for your repo
-5. The stack will load in visual mode
-6. [Add an environment variable](https://docs.stackery.io/docs/using-stackery/environments/#setting-configuration-store-values) of `"collectionId": "[collection name here]"`
-7. Connect your AWS account to Stackery if you haven't yet and then [deploy your stack](https://docs.stackery.io/docs/workflow/deploying-serverless-stacks/)
-8. More details on what each function does can be found in the various `README.md` files in this repo
+1. Sign up for [Stackery](https://www.stackery.io/) (there's a free developer tier)
+2. [Create an environment](https://docs.stackery.io/docs/using-stackery/environments/)
+3. Add `CollectionId` env var that satisfies the regex pattern `[a-zA-Z0-9_.\-]+` (this is a Rekognition collection naming constraint). Should not match the name of any existing rekognition collections that you have unless you want this program to alter that existing collection.
+4. [Run `stackery deploy --interactive-setup`](https://docs.stackery.io/docs/api/cli/stackery_deploy/) via the [Stackery CLI](https://docs.stackery.io/docs/using-stackery/cli/) --- choose to use the environment you created in step 2
+5. Add images to the created s3 buckets in the AWS s3 console and check out the cloudwatch logs for the results
+6. More details on what each function does can be found in the various `README.md` files in this repo
 
 ### Outstanding TODO Items / Open Bugs
 See [open issues](https://github.com/deeheber/face-match/issues)
