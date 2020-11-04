@@ -108,16 +108,16 @@ Resources:
           TABLE_NAME: !Ref CollectionTable
           TABLE_ARN: !GetAtt CollectionTable.Arn
           COLLECTION_NAME: !Ref EnvConfigcollectionIdAsString
-  CreateCollection:
+  CreateOrRemoveCollection:
     Type: AWS::Serverless::Function
     Properties:
-      FunctionName: !Sub ${AWS::StackName}-CreateCollection
+      FunctionName: !Sub ${AWS::StackName}-CreateOrRemoveCollectio
       Description: !Sub
         - Stack ${StackTagName} Environment ${EnvironmentTagName} Function ${ResourceName}
-        - ResourceName: CreateCollection
-      CodeUri: src/CreateCollection
+        - ResourceName: CreateOrRemoveCollection
+      CodeUri: src/CreateOrRemoveCollection
       Handler: index.handler
-      Runtime: nodejs10.x
+      Runtime: nodejs12.x
       MemorySize: 3008
       Timeout: 30
       Tracing: Active
@@ -133,10 +133,10 @@ Resources:
       Environment:
         Variables:
           COLLECTION_NAME: !Ref EnvConfigcollectionIdAsString
-  CreateCollectionDeployTrigger:
+  CreateOrRemoveCollectionDeployTrigger:
     Type: Custom::FunctionDeployTrigger
     Properties:
-      ServiceToken: !GetAtt CreateCollection.Arn
+      ServiceToken: !GetAtt CreateOrRemoveCollection.Arn
       DeploymentTimestamp: !Ref DeploymentTimestamp
 Parameters:
   StackTagName:
