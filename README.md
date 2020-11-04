@@ -27,7 +27,7 @@
         "collectionId": "yourCollectionNameHere"
     }
     ```
-4. [Run `stackery deploy --interactive-setup`](https://docs.stackery.io/docs/api/cli/stackery_deploy/) via the [Stackery CLI](https://docs.stackery.io/docs/using-stackery/cli/) --- choose to use the environment you created in step 2
+4. [Run `stackery deploy`](https://docs.stackery.io/docs/api/cli/stackery_deploy/) via the [Stackery CLI](https://docs.stackery.io/docs/using-stackery/cli/) --- choose to use the environment you created in step 2 and this should also create a Stackery stack for you too.
 5. Add images to the created s3 buckets in the AWS s3 console and check out the cloudwatch logs for the results
 6. More details on what each function does can be found in the various `README.md` files in this repo
 

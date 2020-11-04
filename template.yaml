@@ -130,6 +130,7 @@ Resources:
               Action:
                 - rekognition:ListCollections
                 - rekognition:CreateCollection
+                - rekognition:DeleteCollection
       Environment:
         Variables:
           COLLECTION_NAME: !Ref EnvConfigcollectionIdAsString
