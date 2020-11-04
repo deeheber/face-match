@@ -31,7 +31,7 @@ Resources:
         - ResourceName: CompareFaces
       CodeUri: src/CompareFaces
       Handler: index.handler
-      Runtime: nodejs10.x
+      Runtime: nodejs12.x
       MemorySize: 3008
       Timeout: 30
       Tracing: Active
@@ -68,7 +68,7 @@ Resources:
         - ResourceName: ManageCollection
       CodeUri: src/ManageCollection
       Handler: index.handler
-      Runtime: nodejs10.x
+      Runtime: nodejs12.x
       MemorySize: 3008
       Timeout: 30
       Tracing: Active
