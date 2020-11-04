@@ -42,7 +42,7 @@ exports.handler = async (event, context) => {
           ObjectKey
         }
       }).promise();
-      console.log(`Image metadata successfully written to dynamoDB`);
+      console.log('Image metadata successfully written to dynamoDB');
 
       response = `Image successfully added to the ${CollectionName} collection`;
     }
