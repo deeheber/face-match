@@ -6,7 +6,6 @@
 - Could be used for facial recognition to unlock something like a diary or a door.
 
 ### Technologies Used
-- [Stackery](https://www.stackery.io/)
 - [AWS](https://aws.amazon.com/)
   - [AWS SAM](https://aws.amazon.com/serverless/sam/)
   - CloudFormation
@@ -19,17 +18,20 @@
 ![Setup](https://user-images.githubusercontent.com/12616554/63046958-42611880-be88-11e9-97ac-cc34a1d5de52.png)
 
 ### Directions to run/deploy
-1. Sign up for [Stackery](https://www.stackery.io/) (there's a free developer tier)
-2. [Create an environment](https://docs.stackery.io/docs/using-stackery/environments/)
-3. Add `collectionId` env var that satisfies the regex pattern `[a-zA-Z0-9_.\-]+` (this is a Rekognition collection naming constraint). Should not match the name of any existing rekognition collections that you have unless you want this program to alter that existing collection. Should look something like:
+1. Install NodeJS v.14, AWS CLI, and [AWS SAM CLI](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-cli-install.html) installed on your local machine if you don't have it yet
+2. Create your Rekognition collection (id should satisfy the regex pattern `[a-zA-Z0-9_.\-]+`). Note this should not match the id of any existing rekognition collections that you have unless you want this program to alter that existing collection
+    ```bash
+    aws rekognition create-collection --collection-id <YOUR COLLECTION ID HERE>
     ```
-    {
-        "collectionId": "yourCollectionNameHere"
-    }
-    ```
-4. [Run `stackery deploy`](https://docs.stackery.io/docs/api/cli/stackery_deploy/) via the [Stackery CLI](https://docs.stackery.io/docs/using-stackery/cli/) --- choose to use the environment you created in step 2 and this should also create a Stackery stack for you too.
+    Full CLI docs [here](https://docs.aws.amazon.com/cli/latest/reference/rekognition/create-collection.html)
+4. [Run `sam build`](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-cli-command-reference-sam-build.html) and [`sam deploy --guided`](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-cli-command-reference-sam-deploy.html)
 5. Add images to the created s3 buckets in the AWS s3 console and check out the cloudwatch logs for the results
 6. More details on what each function does can be found in the various `README.md` files in this repo
+7. Optional delete the Rekognition collection for good AWS account hygene
+    ```bash
+    aws rekognition delete-collection --collection-id <YOUR COLLECTION ID HERE>
+    ```
+    Full CLI docs [here](https://docs.aws.amazon.com/cli/latest/reference/rekognition/delete-collection.html)
 
 ### Outstanding TODO Items / Open Bugs
 See [open issues](https://github.com/deeheber/face-match/issues)
