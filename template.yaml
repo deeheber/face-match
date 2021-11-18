@@ -19,21 +19,19 @@ Resources:
       KeySchema:
         - AttributeName: ObjectKey
           KeyType: HASH
-      StreamSpecification:
-        StreamViewType: NEW_AND_OLD_IMAGES
       TableName: !Sub ${AWS::StackName}-CollectionTable
   CompareFaces:
     Type: AWS::Serverless::Function
     Properties:
       FunctionName: !Sub ${AWS::StackName}-CompareFaces
       Description: !Sub
-        - Stack ${StackTagName} Environment ${EnvironmentTagName} Function ${ResourceName}
+        - Stack ${AWS::StackName} Function ${ResourceName}
         - ResourceName: CompareFaces
       CodeUri: src/CompareFaces
       Handler: index.handler
       Runtime: nodejs14.x
-      MemorySize: 3008
-      Timeout: 30
+      MemorySize: 4008
+      Timeout: 45
       Tracing: Active
       Policies:
         - AWSXrayWriteOnlyAccess
@@ -58,19 +56,19 @@ Resources:
               - s3:ObjectCreated:*
       Environment:
         Variables:
-          COLLECTION_NAME: !Ref EnvConfigcollectionIdAsString
+          COLLECTION_NAME: !Ref RekognitionId
   ManageCollection:
     Type: AWS::Serverless::Function
     Properties:
       FunctionName: !Sub ${AWS::StackName}-ManageCollection
       Description: !Sub
-        - Stack ${StackTagName} Environment ${EnvironmentTagName} Function ${ResourceName}
+        - Stack ${AWS::StackName} Function ${ResourceName}
         - ResourceName: ManageCollection
       CodeUri: src/ManageCollection
       Handler: index.handler
       Runtime: nodejs14.x
-      MemorySize: 3008
-      Timeout: 30
+      MemorySize: 4008
+      Timeout: 45
       Tracing: Active
       Policies:
         - AWSXrayWriteOnlyAccess
@@ -107,51 +105,9 @@ Resources:
         Variables:
           TABLE_NAME: !Ref CollectionTable
           TABLE_ARN: !GetAtt CollectionTable.Arn
-          COLLECTION_NAME: !Ref EnvConfigcollectionIdAsString
-  CreateOrRemoveCollection:
-    Type: AWS::Serverless::Function
-    Properties:
-      FunctionName: !Sub ${AWS::StackName}-CreateOrRemoveCollectio
-      Description: !Sub
-        - Stack ${StackTagName} Environment ${EnvironmentTagName} Function ${ResourceName}
-        - ResourceName: CreateOrRemoveCollection
-      CodeUri: src/CreateOrRemoveCollection
-      Handler: index.handler
-      Runtime: nodejs14.x
-      MemorySize: 3008
-      Timeout: 30
-      Tracing: Active
-      Policies:
-        - AWSXrayWriteOnlyAccess
-        - Version: 2012-10-17
-          Statement:
-            - Effect: Allow
-              Resource: '*'
-              Action:
-                - rekognition:ListCollections
-                - rekognition:CreateCollection
-                - rekognition:DeleteCollection
-      Environment:
-        Variables:
-          COLLECTION_NAME: !Ref EnvConfigcollectionIdAsString
-  CreateOrRemoveCollectionDeployTrigger:
-    Type: Custom::FunctionDeployTrigger
-    Properties:
-      ServiceToken: !GetAtt CreateOrRemoveCollection.Arn
-      DeploymentTimestamp: !Ref DeploymentTimestamp
+          COLLECTION_NAME: !Ref RekognitionId
 Parameters:
-  StackTagName:
+  RekognitionId:
     Type: String
-    Description: Stack Name (injected by Stackery at deployment time)
-  EnvironmentTagName:
-    Type: String
-    Description: Environment Name (injected by Stackery at deployment time)
-  EnvConfigcollectionIdAsString:
-    Type: AWS::SSM::Parameter::Value<String>
-    Default: /<EnvironmentName>/collectionId
-  DeploymentTimestamp:
-    Type: Number
-    Description: Deployment preparation timestamp in milliseconds Since Epoch (injected by Stackery at deployment time)
-Metadata:
-  EnvConfigParameters:
-    EnvConfigcollectionIdAsString: collectionId
+    Description: Collection ID for Rekognition
+    Default: FaceSpace

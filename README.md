@@ -15,7 +15,8 @@
   - Rekognition
 - [Node](https://nodejs.org/en/)
 
-![Setup](https://user-images.githubusercontent.com/12616554/63046958-42611880-be88-11e9-97ac-cc34a1d5de52.png)
+### Architecture Overview
+![Architecture](https://user-images.githubusercontent.com/12616554/142489428-4a4aa476-5dbf-41a1-96fe-b84fceabcf70.png)
 
 ### Directions to run/deploy
 1. Install NodeJS v.14, AWS CLI, and [AWS SAM CLI](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-cli-install.html) installed on your local machine if you don't have it yet
@@ -24,7 +25,7 @@
     aws rekognition create-collection --collection-id <YOUR COLLECTION ID HERE>
     ```
     Full CLI docs [here](https://docs.aws.amazon.com/cli/latest/reference/rekognition/create-collection.html)
-4. [Run `sam build`](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-cli-command-reference-sam-build.html) and [`sam deploy --guided`](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-cli-command-reference-sam-deploy.html)
+4. [Run `sam build`](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-cli-command-reference-sam-build.html) and [`sam deploy --guided`](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-cli-command-reference-sam-deploy.html). When prompted for `RekognitionId` parameter's value, **make sure to add the same collection id you initiated in step #2**.
 5. Add images to the created s3 buckets in the AWS s3 console and check out the cloudwatch logs for the results
 6. More details on what each function does can be found in the various `README.md` files in this repo
 7. Optional delete the Rekognition collection for good AWS account hygene
