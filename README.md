@@ -1,8 +1,8 @@
 # face-match
 
 ## Description
-- This stack allows you to upload and delete images from a collection.
-- You can then upload other images (outside of the collection) and the program searches the images in the collection for a face match with the other images that were uploaded.
+- This stack allows you to upload and delete images from a Rekognition collection.
+- You can then upload other images (outside of the Rekognition collection) and then Rekognition searches the images in the collection for a face match with the other images that were uploaded.
 - Could be used for facial recognition to unlock something like a diary or a door.
 
 ### Technologies Used
@@ -19,16 +19,16 @@
 ![Architecture](https://user-images.githubusercontent.com/12616554/142489428-4a4aa476-5dbf-41a1-96fe-b84fceabcf70.png)
 
 ### Directions to run/deploy
-1. Install NodeJS v.14, AWS CLI, and [AWS SAM CLI](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-cli-install.html) installed on your local machine if you don't have it yet
-2. Create your Rekognition collection (id should satisfy the regex pattern `[a-zA-Z0-9_.\-]+`). Note this should not match the id of any existing rekognition collections that you have unless you want this program to alter that existing collection
+1. Install NodeJS v.14, AWS CLI, and [AWS SAM CLI](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-cli-install.html) on your local machine if you don't have it yet
+2. Create your Rekognition collection using the AWS CLI (id should satisfy the regex pattern `[a-zA-Z0-9_.\-]+`). Note this **should not match the id of any existing rekognition collections** that you have unless you want this program to alter that existing collection
     ```bash
     aws rekognition create-collection --collection-id <YOUR COLLECTION ID HERE>
     ```
     Full CLI docs [here](https://docs.aws.amazon.com/cli/latest/reference/rekognition/create-collection.html)
-4. [Run `sam build`](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-cli-command-reference-sam-build.html) and [`sam deploy --guided`](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-cli-command-reference-sam-deploy.html). When prompted for `RekognitionId` parameter's value, **make sure to add the same collection id you initiated in step #2**.
+4. [Run `sam build`](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-cli-command-reference-sam-build.html) and [`sam deploy --guided`](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-cli-command-reference-sam-deploy.html). When prompted for `RekognitionId` parameter's value, **make sure to add the same collection id from step #2**.
 5. Add images to the created s3 buckets in the AWS s3 console and check out the cloudwatch logs for the results
 6. More details on what each function does can be found in the various `README.md` files in this repo
-7. Optional delete the Rekognition collection for good AWS account hygene
+7. Delete the Rekognition collection when finished (Recommended for good AWS account hygene)
     ```bash
     aws rekognition delete-collection --collection-id <YOUR COLLECTION ID HERE>
     ```
