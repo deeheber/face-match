@@ -25,8 +25,11 @@
     aws rekognition create-collection --collection-id <YOUR COLLECTION ID HERE>
     ```
     Full CLI docs [here](https://docs.aws.amazon.com/cli/latest/reference/rekognition/create-collection.html)
-4. [Run `sam build`](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-cli-command-reference-sam-build.html) and [`sam deploy --guided`](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-cli-command-reference-sam-deploy.html). When prompted for `RekognitionId` parameter's value, **make sure to add the same collection id from step #2**.
-5. Add images to the created s3 buckets in the AWS s3 console and check out the cloudwatch logs for the results
+4. [Run `sam build`](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-cli-command-reference-sam-build.html) and [`sam deploy --guided`](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-cli-command-reference-sam-deploy.html). When prompted for `RekognitionId` parameter's value, **make sure to add the same collection id from step #2**. When prompted opt into saving your config file as samconfig.toml in the root of the project (the default setting).
+5. Add images to the created s3 buckets in the AWS s3 console (admittely manual, but would love to have an IoT camera snap a pic and upload to S3 in future iterations) and check out the cloudwatch logs for the results. I like to use the `sam logs` command instead of looking for the Lambda logs in the AWS console...something like (update `-n` to be the name of the function you want to view logs for and the `--stack-name` to whatever you named the stack)
+  ```bash
+  sam logs --stack-name face-match --config-file samconfig.toml -n ManageCollection --tail
+  ```
 6. More details on what each function does can be found in the various `README.md` files in this repo
 7. Delete the Rekognition collection when finished (Recommended for good AWS account hygene)
     ```bash

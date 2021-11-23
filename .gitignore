@@ -5,3 +5,4 @@ events
 .aws-sam/
 .stackery/
 .vscode/
+samconfig.toml

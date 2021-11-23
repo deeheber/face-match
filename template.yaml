@@ -23,6 +23,8 @@ Resources:
   CompareFaces:
     Type: AWS::Serverless::Function
     Properties:
+      Architectures:
+        - arm64
       FunctionName: !Sub ${AWS::StackName}-CompareFaces
       Description: !Sub
         - Stack ${AWS::StackName} Function ${ResourceName}
@@ -60,6 +62,8 @@ Resources:
   ManageCollection:
     Type: AWS::Serverless::Function
     Properties:
+      Architectures:
+        - arm64
       FunctionName: !Sub ${AWS::StackName}-ManageCollection
       Description: !Sub
         - Stack ${AWS::StackName} Function ${ResourceName}
@@ -110,4 +114,4 @@ Parameters:
   RekognitionId:
     Type: String
     Description: Collection ID for Rekognition
-    Default: FaceSpace
+    Default: facespace
