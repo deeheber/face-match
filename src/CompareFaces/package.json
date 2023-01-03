@@ -2,6 +2,6 @@
   "name": "image-detector",
   "version": "1.0.0",
   "dependencies": {
-    "aws-sdk": "~2"
+    "@aws-sdk/client-rekognition": "^3.241.0"
   }
 }

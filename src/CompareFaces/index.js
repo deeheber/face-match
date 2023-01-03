@@ -1,7 +1,7 @@
-const AWS = require('aws-sdk');
-const rekognition = new AWS.Rekognition();
+const { RekognitionClient, SearchFacesByImageCommand } = require('@aws-sdk/client-rekognition');
+const client = new RekognitionClient({ region: process.env.AWS_REGION });
 
-exports.handler = async (event, context) => {
+exports.handler = async event => {
   // Log the event argument for debugging and for use in local development.
   console.log(JSON.stringify(event, undefined, 2));
 
@@ -23,9 +23,9 @@ exports.handler = async (event, context) => {
   let statusCode;
 
   try {
-    response = await rekognition.searchFacesByImage(params).promise();
+    response = await client.send(new SearchFacesByImageCommand(params));
     statusCode = 200;
-    console.log('Face comparison results ');
+    console.log('Face matches: ', response.FaceMatches.length);
     console.log(JSON.stringify(response, undefined, 2));
   } catch (err) {
     response = err.message;

@@ -1,8 +1,12 @@
-const AWS = require('aws-sdk');
-const dynamodb = new AWS.DynamoDB.DocumentClient();
-const rekognition = new AWS.Rekognition();
+const { RekognitionClient, IndexFacesCommand, DeleteFacesCommand } = require('@aws-sdk/client-rekognition');
+const rekognitionClient = new RekognitionClient({ region: process.env.AWS_REGION });
 
-exports.handler = async (event, context) => {
+const { DynamoDBClient } = require('@aws-sdk/client-dynamodb');
+const { DynamoDBDocumentClient, PutCommand, GetCommand, DeleteCommand } = require('@aws-sdk/lib-dynamodb');
+const dyanmodbClient = new DynamoDBClient({ region: process.env.AWS_REGION });
+const ddbDocClient = DynamoDBDocumentClient.from(dyanmodbClient);
+
+exports.handler = async event => {
   // Log the event argument for debugging and for use in local development.
   console.log(JSON.stringify(event, undefined, 2));
 
@@ -18,30 +22,34 @@ exports.handler = async (event, context) => {
     // Adding an image to the collection
     if (event.Records[0].eventName === 'ObjectCreated:Put') {
       console.log(`Adding image to ${CollectionName} collection`);
-      const rekognitionResult = await rekognition.indexFaces({
-        CollectionId: CollectionName,
-        Image: {
-          S3Object: {
-            Bucket: BucketName,
-            Name: ObjectKey
-          }
-        },
-        MaxFaces: 1
-      }).promise();
+      const rekognitionResult = await rekognitionClient.send(
+        new IndexFacesCommand({
+          CollectionId: CollectionName,
+          Image: {
+            S3Object: {
+              Bucket: BucketName,
+              Name: ObjectKey
+            }
+          },
+          MaxFaces: 1
+        })
+      );
 
       console.log('rekognitionResult ', JSON.stringify(rekognitionResult, undefined, 2));
       const FaceId = rekognitionResult.FaceRecords[0].Face.FaceId;
       console.log(`Face successfully added to ${CollectionName} collection`);
 
       console.log(`Adding metadata to ${TableName}`);
-      await dynamodb.put({
-        TableName,
-        Item: {
-          FaceId,
-          BucketName,
-          ObjectKey
-        }
-      }).promise();
+      await ddbDocClient.send(
+        new PutCommand({
+          TableName,
+          Item: {
+            FaceId,
+            BucketName,
+            ObjectKey
+          }
+        })
+      );
       console.log('Image metadata successfully written to dynamoDB');
 
       response = `Image successfully added to the ${CollectionName} collection`;
@@ -50,24 +58,30 @@ exports.handler = async (event, context) => {
     // Removing an image from the collection
     if (event.Records[0].eventName === 'ObjectRemoved:Delete') {
       console.log('Getting FaceId from dynamoDB');
-      const { Item } = await dynamodb.get({
-        TableName,
-        Key: { ObjectKey }
-      }).promise();
+      const { Item } = await ddbDocClient.send(
+        new GetCommand({
+          TableName,
+          Key: { ObjectKey }
+        })
+      );
       console.log(`FaceId ${Item.FaceId} successfully obtained from dynamoDB`);
 
       console.log(`Deteting face ${Item.FaceId} from the ${CollectionName} collection`);
-      await rekognition.deleteFaces({
-        CollectionId: CollectionName,
-        FaceIds: [`${Item.FaceId}`]
-      }).promise();
+      await rekognitionClient.send(
+        new DeleteFacesCommand({
+          CollectionId: CollectionName,
+          FaceIds: [`${Item.FaceId}`]
+        })
+      );
       console.log(`Face ${Item.FaceId} successfully deleted from the ${CollectionName} collection`);
 
       console.log('Removing image metadata from dynamoDB');
-      await dynamodb.delete({
-        TableName,
-        Key: { ObjectKey }
-      }).promise();
+      await ddbDocClient.send(
+        new DeleteCommand({
+          TableName,
+          Key: { ObjectKey }
+        })
+      );
       console.log(`Image ${Item.FaceId} metadata successfully removed from dynamoDB`);
 
       response = `Image ${Item.FaceId} successfully removed from the ${CollectionName} collection`;
