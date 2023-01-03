@@ -8,8 +8,7 @@
 
 ### Technologies Used
 - [AWS](https://aws.amazon.com/)
-  - [AWS SAM](https://aws.amazon.com/serverless/sam/)
-  - CloudFormation
+  - [AWS SAM](https://aws.amazon.com/serverless/sam/) backed by CloudFormation
   - S3
   - Lambda
   - DynamoDB
@@ -20,7 +19,7 @@
 ![Architecture](https://user-images.githubusercontent.com/12616554/142489428-4a4aa476-5dbf-41a1-96fe-b84fceabcf70.png)
 
 ### Directions to run/deploy
-1. Install NodeJS v.14, AWS CLI, and [AWS SAM CLI](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-cli-install.html) on your local machine if you don't have it yet
+1. Install NodeJS (current version number for this app specified in `.nvmrc` file at the root of this repo), AWS CLI, and [AWS SAM CLI](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-cli-install.html) on your local machine if you don't have it yet
 2. Create your Rekognition collection using the AWS CLI (id should satisfy the regex pattern `[a-zA-Z0-9_.\-]+`). Note this **should not match the id of any existing rekognition collections** that you have unless you want this program to alter that existing collection
     ```bash
     aws rekognition create-collection --collection-id <YOUR COLLECTION ID HERE>
