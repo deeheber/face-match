@@ -8,8 +8,7 @@
 
 ### Technologies Used
 - [AWS](https://aws.amazon.com/)
-  - [AWS SAM](https://aws.amazon.com/serverless/sam/)
-  - CloudFormation
+  - [AWS SAM](https://aws.amazon.com/serverless/sam/) backed by CloudFormation
   - S3
   - Lambda
   - DynamoDB
@@ -20,19 +19,22 @@
 ![Architecture](https://user-images.githubusercontent.com/12616554/142489428-4a4aa476-5dbf-41a1-96fe-b84fceabcf70.png)
 
 ### Directions to run/deploy
-1. Install NodeJS v.14, AWS CLI, and [AWS SAM CLI](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-cli-install.html) on your local machine if you don't have it yet
+1. Install NodeJS (current version number for this app specified in `.nvmrc` file at the root of this repo), AWS CLI, and [AWS SAM CLI](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-cli-install.html) on your local machine if you don't have it yet
 2. Create your Rekognition collection using the AWS CLI (id should satisfy the regex pattern `[a-zA-Z0-9_.\-]+`). Note this **should not match the id of any existing rekognition collections** that you have unless you want this program to alter that existing collection
     ```bash
     aws rekognition create-collection --collection-id <YOUR COLLECTION ID HERE>
     ```
     Full CLI docs [here](https://docs.aws.amazon.com/cli/latest/reference/rekognition/create-collection.html)
 4. Run [`sam build`](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-cli-command-reference-sam-build.html) and [`sam deploy --guided`](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-cli-command-reference-sam-deploy.html). When prompted for `RekognitionId` parameter's value, **make sure to add the same collection id from step #2**. Select `Y` to save your config file as `samconfig.toml` in the root of the project (the default setting).
-5. Add images to the created S3 buckets in the AWS S3 console and check the Cloudwatch logs for the results. I like to use the `sam logs` command instead of looking for the logs in the AWS console...something like this (update `-n` to be the name of the function you want to view logs for and the `--stack-name` to whatever you named the stack)
-  ```bash
-  sam logs --stack-name face-match --config-file samconfig.toml -n ManageCollection --tail
-  ```
+5. Add images to the created S3 buckets in the AWS S3 console and check the Cloudwatch logs for the results. Add to the collection images bucket first to add images to compare against to a collection, then add to the images bucket to compare that uploaded image(s) to the images in the collection. 
+
+6. (Optional) I like to use the `sam logs` command instead of looking for the logs in the AWS console to see the face match comparison results...something like this (update `-n` to be the name of the function you want to view logs for and the `--stack-name` to whatever you named the stack)
+    ```bash
+    sam logs --stack-name face-match --config-file samconfig.toml --tail
+    ```
 6. More details on what each function does can be found in the various `README.md` files in this repo
-7. Delete the Rekognition collection when finished (Recommended for good AWS account hygene)
+7. (Optional cleanup when finished) Delete the stack, run `sam delete` after emptying the two S3 buckets.
+8. (Optional cleanup when finished) Delete the Rekognition collection
     ```bash
     aws rekognition delete-collection --collection-id <YOUR COLLECTION ID HERE>
     ```
@@ -47,7 +49,7 @@ If you find a bug or have a question, feel free to open a new issue and our main
 ### Pull Request Process
 1. Fork the respository
 2. Make any changes you'd like
-3. Open a new PR against `master` with a description of the proposed changes as well as any other information you find relevant.
+3. Open a new PR against `main` with a description of the proposed changes as well as any other information you find relevant.
 4. If your PR fixes an open issue be sure to write `fixes #[ issue number here ]`
 
 ### Finding Help
