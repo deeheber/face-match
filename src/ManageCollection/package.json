@@ -2,8 +2,8 @@
   "name": "function",
   "version": "1.0.0",
   "dependencies": {
-    "@aws-sdk/client-dynamodb": "^3.241.0",
-    "@aws-sdk/client-rekognition": "^3.241.0",
+    "@aws-sdk/client-dynamodb": "^3.351.0",
+    "@aws-sdk/client-rekognition": "^3.351.0",
     "@aws-sdk/lib-dynamodb": "^3.241.0"
   }
 }
